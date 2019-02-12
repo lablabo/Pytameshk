@@ -8,7 +8,6 @@ from flask import Flask, jsonify, request
 
 class controller:
     def __init__(self, register):
-        print("blockchain lib started")
         self.current_transactions = []
         self.chain = []
         self.nodes = set()
