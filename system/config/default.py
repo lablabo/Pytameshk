@@ -1,5 +1,5 @@
 import os
-from system.config import log, module, network
+from system.config import log, module, network, library
 
 
 class default_config:
@@ -8,6 +8,7 @@ class default_config:
         self.log = None
         self.network = None
         self.module = None
+        self.library = None
         self.path = os.getcwd()
         self.auther = "Seyed Mohammad Hosseini"
         self.version = "1.5.9.1"
@@ -40,3 +41,4 @@ class default_config:
         self.log = log.config_log(self).get()
         self.module = module.config_module(self).get()
         self.network = network.config_network(self).get()
+        self.library = library.config_library(self).get()
