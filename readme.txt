@@ -1,3 +1,3 @@
-pyTameshk - Blockchain
-university of aveiro, portugal
-seyed mohammad hosseini
+PyTameshk and Blockchain
+Seyed Mohammad Hosseini
+University of Aveiro - 2019
