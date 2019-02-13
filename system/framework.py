@@ -1,6 +1,6 @@
 from subprocess import call
 from platform import system
-import sys,socket,imp,platform
+import sys,imp,platform
 
 class framework:
 
@@ -12,7 +12,7 @@ class framework:
 
     def check_os(self):
         os = system()
-        print("Framework Version : ", self.config.get("version"))
+        print("Framework Version : ", self.config.version)
         print("Operating System  : ", os)
         print("Platform  Release : ", platform.release())
         print("Platform  Version : ", platform.version())
@@ -35,16 +35,4 @@ class framework:
             call('clear', shell = True)
         elif os == 'Windows':
             call('cls', shell = True)
-        pass
-
-    def check_admin(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = (self.config.get("admin_ip"), self.config.get("admin_port"))
-        try:
-            sock.connect(server_address)
-            print("Admin Status      :  Connect")
-        except Exception as e:
-            exit("Admin Status      :  Disconnect -> %s" %e)
-        finally:
-            sock.close()
         pass

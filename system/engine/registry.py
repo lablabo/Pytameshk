@@ -1,5 +1,5 @@
-from threading import Thread
 class registry:
+
     def __init__(self):
         self.data_ = {}
         self.config = None
