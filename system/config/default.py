@@ -12,7 +12,7 @@ class default_config:
         self.path = os.getcwd()
         self.auther = "Seyed Mohammad Hosseini"
         self.version = "1.5.9.1"
-        self.startTime = "04.25.2016"
+        self.startTime = "02.12.2019"
 
         self.get_other_configs()
 
