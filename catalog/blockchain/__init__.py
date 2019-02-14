@@ -1,37 +1,72 @@
 from uuid import uuid4
-from flask import Flask, jsonify, request, app
+from flask import Flask, jsonify, request, app, Response
 from argparse import ArgumentParser
+from werkzeug.exceptions import HTTPException
+
+
+class EndpointAction(object):
+
+    def __init__(self, action):
+        self.action = action
+        self.response = Response(status=200, headers={})
+
+    def __call__(self, *args):
+        self.action()
+        return self.response
+
+
+class FlaskAppWrapper(object):
+    app = None
+
+    def __init__(self, name):
+        self.app = Flask(name)
+        self.app.register_error_handler(HTTPException, lambda e: (str(e), e.code))
+
+    def run(self):
+        self.app.run()
+
+    def add_endpoint(self, endpoint=None, endpoint_name=None, handler=None):
+        self.app.add_url_rule(endpoint, endpoint_name, EndpointAction(handler))
 
 
 class controller:
+
+    app = None
+    blockchain = None
+    node_identifier = None
+
     def __init__(self, action, libraries):
-        self.app = Flask(__name__)
+
         self.node_identifier = str(uuid4()).replace('-', '')
         self.blockchain = libraries['blockchain']
 
-        parser = ArgumentParser()
-        parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
-        args = parser.parse_args()
-        port = args.port
+        app = FlaskAppWrapper('wrap')
+        app.add_endpoint(endpoint='/mine', endpoint_name='mine', handler=self.mine)
+        app.add_endpoint(endpoint='/new_transaction', endpoint_name='new_transaction', handler=self.new_transaction)
+        app.add_endpoint(endpoint='/full_chain', endpoint_name='full_chain', handler=self.full_chain)
+        app.add_endpoint(endpoint='/register_nodes', endpoint_name='register_nodes', handler=self.register_nodes)
+        app.add_endpoint(endpoint='/consensus', endpoint_name='consensus', handler=self.consensus)
 
-        self.app.run(host='0.0.0.0', port=port)
+
+        app.run()
+
+        # parser = ArgumentParser()
+        # parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
+        # args = parser.parse_args()
+        # port = args.port
+        # self.app.run(host='0.0.0.0', port=port)
         pass
 
-    #@app.route('/mine', methods=['GET'])
     def mine(self):
-        # We run the proof of work algorithm to get the next proof...
         last_block = self.blockchain.last_block
         proof = self.blockchain.proof_of_work(last_block)
 
-        # We must receive a reward for finding the proof.
-        # The sender is "0" to signify that this node has mined a new coin.
         self.blockchain.new_transaction(
             sender="0",
             recipient=self.node_identifier,
             amount=1,
         )
 
-        # Forge the new Block by adding it to the chain
         previous_hash = self.blockchain.hash(last_block)
         block = self.blockchain.new_block(proof, previous_hash)
 
@@ -42,32 +77,31 @@ class controller:
             'proof': block['proof'],
             'previous_hash': block['previous_hash'],
         }
+        print(response)
         return jsonify(response), 200
 
-    #@app.route('/transactions/new', methods=['POST'])
+    # POST
     def new_transaction(self):
         values = request.get_json()
 
-        # Check that the required fields are in the POST'ed data
         required = ['sender', 'recipient', 'amount']
         if not all(k in values for k in required):
             return 'Missing values', 400
 
-        # Create a new Transaction
         index = self.blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
 
         response = {'message': f'Transaction will be added to Block {index}'}
         return jsonify(response), 201
 
-    #@app.route('/chain', methods=['GET'])
     def full_chain(self):
         response = {
             'chain': self.blockchain.chain,
             'length': len(self.blockchain.chain),
         }
+        print(response)
         return jsonify(response), 200
 
-    #@app.route('/nodes/register', methods=['POST'])
+    # POST
     def register_nodes(self):
         values = request.get_json()
 
@@ -84,7 +118,6 @@ class controller:
         }
         return jsonify(response), 201
 
-    #@app.route('/nodes/resolve', methods=['GET'])
     def consensus(self):
         replaced = self.blockchain.resolve_conflicts()
 
