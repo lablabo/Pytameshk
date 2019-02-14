@@ -1,1 +1,1 @@
-pip install numpy, flask
+pip install numpy, flask,socket
