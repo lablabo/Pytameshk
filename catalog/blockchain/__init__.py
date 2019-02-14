@@ -23,7 +23,7 @@ class FlaskAppWrapper(object):
         self.app.register_error_handler(HTTPException, lambda e: (str(e), e.code))
 
     def run(self):
-        self.app.run()
+        self.app.run(host= '0.0.0.0')
 
     def add_endpoint(self, endpoint=None, endpoint_name=None, handler=None):
         self.app.add_url_rule(endpoint, endpoint_name, EndpointAction(handler))
