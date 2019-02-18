@@ -8,3 +8,5 @@ sudo python -m pip install socket
 sudo python -m pip install itertools
 sudo python -m pip install re
 sudo python -m pip install requests
+print "------ Installer Ended ------"
+sudo python index.py
