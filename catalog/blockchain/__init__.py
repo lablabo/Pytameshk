@@ -2,6 +2,7 @@ from uuid import uuid4
 from flask import Flask, jsonify, request, app, Response
 from argparse import ArgumentParser
 from werkzeug.exceptions import HTTPException
+from catalog.blockchain.assets import config
 
 
 class EndpointAction(object):
@@ -20,6 +21,8 @@ class FlaskAppWrapper(object):
 
     def __init__(self, name):
         self.app = Flask(name)
+
+        # Error Handling
         self.app.register_error_handler(HTTPException, lambda e: (str(e), e.code))
 
     def run(self):
@@ -39,6 +42,9 @@ class controller:
 
         self.node_identifier = str(uuid4()).replace('-', '')
         self.blockchain = libraries['blockchain']
+
+        # Custom Configuration -- Module
+        custom = config.custom_config()
 
         app = FlaskAppWrapper('wrap')
         app.add_endpoint(endpoint='/mine', endpoint_name='mine', handler=self.mine)
