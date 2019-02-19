@@ -1,14 +1,13 @@
 class custom_config:
 
-    auther = None
-    version = None
-    startTime = None
+    HOST = None
+    PORT = None
 
     def __init__(self):
-        
-        self.auther = "Seyed Mohammad Hosseini"
-        self.version = "1.5.9.1"
-        self.startTime = "02.12.2019"
+
+        self.HOST = '127.0.01' # Standard loopback interface address (localhost)
+        self.PORT = 65432 # Port to listen on (non-privileged ports are > 1023)
+
         pass
 
 

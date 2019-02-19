@@ -1,9 +1,8 @@
 from uuid import uuid4
 from flask import Flask, jsonify, request, app, Response
-from argparse import ArgumentParser
 from werkzeug.exceptions import HTTPException
 from catalog.blockchain.assets import config
-
+from catalog.blockchain.library import message
 
 class EndpointAction(object):
 
@@ -37,14 +36,32 @@ class controller:
     app = None
     blockchain = None
     node_identifier = None
+    thread = None
+    network = None
+    custom_config = None
+    message = None
 
     def __init__(self, action, libraries):
 
+        # Custom Configuration -- Module
+        self.custom_config = config.custom_config()
+        self.message = message.Message()
+
         self.node_identifier = str(uuid4()).replace('-', '')
         self.blockchain = libraries['blockchain']
+        self.network = libraries['network']
 
-        # Custom Configuration -- Module
-        custom = config.custom_config()
+        self.thread = libraries['thread']
+        pool = self.thread.create_thread(2)
+
+        pool.queueTask(self.start_listening, None, None)
+        pool.queueTask(self.start_flask, None, None)
+
+        pool.joinAll()
+
+        pass
+
+    def start_flask(self, data):
 
         app = FlaskAppWrapper('wrap')
         app.add_endpoint(endpoint='/mine', endpoint_name='mine', handler=self.mine)
@@ -52,15 +69,16 @@ class controller:
         app.add_endpoint(endpoint='/full_chain', endpoint_name='full_chain', handler=self.full_chain)
         app.add_endpoint(endpoint='/register_nodes', endpoint_name='register_nodes', handler=self.register_nodes)
         app.add_endpoint(endpoint='/consensus', endpoint_name='consensus', handler=self.consensus)
-
-
         app.run()
 
-        # parser = ArgumentParser()
-        # parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')
-        # args = parser.parse_args()
-        # port = args.port
-        # self.app.run(host='0.0.0.0', port=port)
+        pass
+
+    def start_listening(self, data):
+        socket_ = self.network.create_socket('', self.custom_config.PORT)
+        while True:
+            message_, address = socket_.recvfrom(self.custom_config.PORT)
+            print(address)
+            print(self.message.convert(message_))
         pass
 
     def mine(self):
@@ -83,7 +101,8 @@ class controller:
             'proof': block['proof'],
             'previous_hash': block['previous_hash'],
         }
-        print(response)
+        text = self.message.convert(response, 'json_to_byte')
+        self.network.send_message(text, '',self.custom_config.PORT)
         return jsonify(response), 200
 
     # POST

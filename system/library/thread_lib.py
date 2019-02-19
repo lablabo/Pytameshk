@@ -8,6 +8,9 @@ class controller:
     def __init__(self, register):
         pass
 
+    def create_thread(self, counter):
+        return ThreadPool(counter)
+        pass
 
 class ThreadPool:
 
@@ -88,7 +91,6 @@ class ThreadPool:
             self.__isJoining = False
         finally:
             self.__resizeLock.release()
-
 
 class ThreadPoolThread(threading.Thread):
 
