@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 sudo python system/helper/pip/get-pip.py
 sudo python -m pip --version
 sudo python -m pip install flash
