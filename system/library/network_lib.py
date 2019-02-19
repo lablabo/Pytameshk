@@ -14,7 +14,7 @@ class controller:
         print(message)
         pass
 
-    def create_socket(self, HOST = '', PORT = 65432 ):
+    def create_socket(self, HOST = '255.255.255.255', PORT = 65432 ):
         socket_ = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         socket_.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         socket_.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)

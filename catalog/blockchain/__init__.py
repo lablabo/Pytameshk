@@ -102,7 +102,7 @@ class controller:
             'previous_hash': block['previous_hash'],
         }
         text = self.message.convert(response, 'json_to_byte')
-        self.network.send_message(text, '',self.custom_config.PORT)
+        self.network.send_message(text, '<broadcast>', self.custom_config.PORT)
         return jsonify(response), 200
 
     # POST
