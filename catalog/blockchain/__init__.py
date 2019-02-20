@@ -1,34 +1,7 @@
 from uuid import uuid4
-from flask import Flask, jsonify, request, app, Response
-from werkzeug.exceptions import HTTPException
+from flask import jsonify, request
 from catalog.blockchain.assets import config
-from catalog.blockchain.library import message
-
-
-class EndpointAction(object):
-
-    def __init__(self, action):
-        self.action = action
-        self.response = Response(status=200, headers={})
-
-    def __call__(self, *args):
-        self.action()
-        return self.response
-
-
-class FlaskAppWrapper(object):
-    app = None
-
-    def __init__(self, name):
-        self.app = Flask(name)
-        # Error Handling
-        self.app.register_error_handler(HTTPException, lambda e: (str(e), e.code))
-
-    def run(self):
-        self.app.run(host='0.0.0.0')
-
-    def add_endpoint(self, endpoint=None, endpoint_name=None, handler=None):
-        self.app.add_url_rule(endpoint, endpoint_name, EndpointAction(handler))
+from catalog.blockchain.library import message, FlaskAppWrapper
 
 
 class controller:
@@ -63,7 +36,7 @@ class controller:
 
     def start_flask(self, data):
 
-        app = FlaskAppWrapper('wrap')
+        app = FlaskAppWrapper.FlaskAppWrapper('wrap')
         app.add_endpoint(endpoint='/mine', endpoint_name='mine', handler=self.mine)
         app.add_endpoint(endpoint='/new_transaction', endpoint_name='new_transaction', handler=self.new_transaction)
         app.add_endpoint(endpoint='/full_chain', endpoint_name='full_chain', handler=self.full_chain)
