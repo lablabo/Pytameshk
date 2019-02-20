@@ -2,7 +2,7 @@
 
 PyBlockChain, A FLEXIBLE PLATFORM FOR EMBEDDED SYSTEM COMMUNICATION BASE ON PYTHON
 
-## Getting Started
+## Getting Started 
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
@@ -14,7 +14,7 @@ What things you need to install the Python and how to install them
 https://www.python.org/doc/
 ```
 
-### Installing
+### Installing 
 
 Just:
 
