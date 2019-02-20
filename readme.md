@@ -29,7 +29,7 @@ MVC
 
 ## Built With
 
-* [Seyed Mohammad Hosseini](https://www.researchgate.net/profile/Seyed_Hosseini93) - The web framework used
+* [Seyed Mohammad Hosseini](https://www.researchgate.net/profile/Seyed_Hosseini93) 
 
 
 ## License
