@@ -27,7 +27,7 @@ sh install.sh
 
 MVC
 
-## Built With
+## Author
 
 * [Seyed Mohammad Hosseini](https://www.researchgate.net/profile/Seyed_Hosseini93) 
 
