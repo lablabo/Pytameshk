@@ -16,7 +16,6 @@ class controller:
 
     def __init__(self, action, libraries):
 
-        # Custom Configuration -- Module
         self.custom_config = config.custom_config()
         self.message = message.Message()
 
