@@ -13,6 +13,8 @@ class controller:
     network = None
     custom_config = None
     message = None
+    public_key = None
+    private_key = None
 
     def __init__(self, action, libraries):
 
@@ -25,7 +27,6 @@ class controller:
 
         self.thread = libraries['thread']
         pool = self.thread.create_thread(2)
-
         pool.queueTask(self.start_listening, None, None)
         pool.queueTask(self.start_flask, None, None)
 

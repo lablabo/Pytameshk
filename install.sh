@@ -9,5 +9,7 @@ sudo python -m pip install socket
 sudo python -m pip install itertools
 sudo python -m pip install re
 sudo python -m pip install requests
+python -m pip install cryptography
+
 print "------ Installer Ended ------"
 sudo python index.py
