@@ -14,6 +14,7 @@ class controller:
 
     def __init__(self, action, libraries):
         print("Start IOTA")
+        '''
         parser = ArgumentParser(
             description=__doc__,
             epilog='PyOTA v{version}'.format(version=__version__),
@@ -29,8 +30,9 @@ class controller:
                 '(defaults to http://localhost:14265/).'
             ),
         )
+        '''
 
-        self.main(**vars(parser.parse_args(argv[1:])))
+        #self.main(**vars(parser.parse_args(argv[1:])))
 
     def main(self, uri):
         api = StrictIota(uri)
