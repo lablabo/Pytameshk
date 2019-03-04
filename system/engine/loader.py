@@ -46,7 +46,8 @@ class loader:
         try:
             my_module = importlib.import_module(self.active_module)
         except Exception as e:
-            print("Import Module Error" + e)
+            print("Import Module Error")
+            print(e)
             self.report.error("file", "Import Module -> " + self.active_module + " Error", "system/engine/loader", True)
         globals()["load_module_data"] = my_module
         load_module_data.controller(self.data_, self.libraries)
