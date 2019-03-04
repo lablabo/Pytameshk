@@ -2,6 +2,7 @@ import os
 import sys
 import importlib
 
+
 class loader:
     def __init__(self, registry):
         self.data_ = registry
@@ -44,8 +45,8 @@ class loader:
         sys.path.insert(1, self.modules_path)
         try:
             my_module = importlib.import_module(self.active_module)
-        except:
-            print("Import Module Error")
+        except Exception as e:
+            print("Import Module Error" + e)
             self.report.error("file", "Import Module -> " + self.active_module + " Error", "system/engine/loader", True)
         globals()["load_module_data"] = my_module
         load_module_data.controller(self.data_, self.libraries)
