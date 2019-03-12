@@ -7,6 +7,7 @@ from catalog.Sovrin.library import message
 import subprocess
 import requests
 
+
 class controller:
 
     def __init__(self, action, libraries):
@@ -31,7 +32,7 @@ class controller:
         loop.run_until_complete(self.get_token())
         loop.close()
 
-    async  def get_token(self):
+    async def get_token(self):
         try:
             print("1- The client should have an Indy wallet")
             #await wallet.create_wallet(self.prover['wallet_config'], self.prover['wallet_credentials'])
@@ -72,46 +73,50 @@ class controller:
                     revoc_regs_json
                 )
 
-                jwe_object = crypto.pack_message(
+                output = []
+                output.append(unpack_json['verkey'])
+                jwe_object = await  crypto.pack_message(
                     self.wallet_handle,
-                    json.dumps(proof).encode(),
-                    str(unpack_json['verkey']),
-                    _verkey_
+                    str(proof),
+                    output,
+                    str(_verkey_)
                 )
+                reqi = jwe_object.decode()
+                json_request_two = {"jwe": reqi}
 
-                json_request_two = {"jwe": str(jwe_object)}
                 response_two = requests.post(self.server + "/token", json=json_request_two, headers=self.headers)
+
                 if response_one.status_code == 200:
                     print("5- The handler now analyzes the received JWE.")
                     unpack_two = await crypto.unpack_message(self.wallet_handle, response_two.content)
                     unpack_two = unpack_two.decode('utf-8')
                     unpack_two = json.loads(unpack_two)['message']
                     unpack_two = json.loads(unpack_two)
-                    exit(unpack_two)
-
                     attach_commend = {
-                        "command" : "attachToTangle",
-                        "trunkTransaction" : "",
-                        "branchTransaction" : "",
-                        "minWeightMagnitude" : 14,
-                        "trytes" : "",
-                        "priority" : "",
-                        "accessToken" : ""
+                        "command": "attachToTangle",
+                        "trunkTransaction": "JQBWKRWPNKBFVSZDWB9MRCPCWCJPUHMU9CDZZUIIPW9YTKNM9UAXJBGPVEV9DOENCDTGFHMQYMJNA9999",
+                        "branchTransaction": "PYHKSHIBFZTNCIHVPGMMIUIHWRIGKMSUMQTXEM9BCCKSLJE9KRLCBFGYWBSGOHUB9KREPQHRRCFUA9999",
+                        "minWeightMagnitude": 14,
+                        "trytes": ["LBTCBDSCTCFD999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999WSBKUIG9GLOXCYZKONVVBIKNBHU9FBXGCPUUHZQEPF9LPKEQVQCM9WBKJLGDWTXWACKGWPLKIXKWHNMPE999999999999999999999999999OD9999999999999999999999999CXUMX9D99999999999999999999UXEQOOKHIKVWILYKTUAOPYEDBTYA9EJBFRCDL9UXVVIIVTOIGGCHYVVHMBFWDQZLLTU9LVBER9DXXEPFCJQBWKRWPNKBFVSZDWB9MRCPCWCJPUHMU9CDZZUIIPW9YTKNM9UAXJBGPVEV9DOENCDTGFHMQYMJNA9999PYHKSHIBFZTNCIHVPGMMIUIHWRIGKMSUMQTXEM9BCCKSLJE9KRLCBFGYWBSGOHUB9KREPQHRRCFUA9999ZZ9999999999999999999999999999999999999999999999999999999999999999999999999999999"],
+                        "priority": 5,
+                        "accessToken": unpack_two['token']
                     }
+                    stri = str(json.dumps(attach_commend))
 
-                    jwe_object = crypto.pack_message(
+                    jwe_object = await crypto.pack_message(
                         self.wallet_handle,
-                        json.dumps(attach_commend).encode(),
-                        str(unpack_json['verkey']),
-                        _verkey_
+                        stri,
+                        output,
+                        str(_verkey_)
                     )
-                    json_request_three = {"jwe": str(jwe_object)}
+                    # exit(jwe_object)
+                    json_request_three = {"jwe": jwe_object}
+
                     response_three = requests.post(self.server, json=json_request_three, headers=self.headers)
 
                     unpack_three = await crypto.unpack_message(self.wallet_handle, response_three.content)
                     unpack_three = unpack_three.decode('utf-8')
                     unpack_three = json.loads(unpack_three)['message']
-                    unpack_three = json.loads(unpack_three)
                     exit(unpack_three)
 
                 else:
@@ -164,8 +169,8 @@ class controller:
 
             await anoncreds.prover_create_master_secret(self.wallet_handle, self.master_secret_id)
 
-            self.cred_offer = input("CREDENTIAL OFFER: ")
-            self._cred_def_ = input("CREDENTIAL DEFINITION:")
+            self.cred_offer = input(" Enter => CREDENTIAL OFFER : ")
+            self._cred_def_ = input(" Enter => CREDENTIAL DEFINITION :")
 
             cred_req, cred_req_metadata = await anoncreds.prover_create_credential_req(
                 self.wallet_handle,
@@ -176,7 +181,7 @@ class controller:
             )
 
             print(cred_req)
-            self.myCredit = input("CREDENTIAL: ")
+            self.myCredit = input(" Enter => CREDENTIAL : ")
 
             outPut = await anoncreds.prover_store_credential(
                 self.wallet_handle,
