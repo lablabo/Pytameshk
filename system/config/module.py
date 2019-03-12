@@ -3,7 +3,7 @@ class config_module:
         self.path = default.path + "/catalog/"
         self.loader = "__init__.py"
         self.requirements = ['platform', 'numpy', 'socket', 'itertools', 're', 'flask', 'uuid', 'requests', 'cryptography']
-        self.active = "IOTA"
+        self.active = "SSI-API"
         pass
 
 
