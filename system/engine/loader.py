@@ -66,7 +66,7 @@ class loader:
                     try:
                         imp.find_module(one)
                     except ImportError:
-                        exit("Required Modules  :  SETUP.INI :: Error : Module '" + one + "' Not Found")
+                        exit("Required Modules  :  SETUP.INI :: Module '" + one + "' Not Found")
 
         load_module_data.controller(self.data_, self.libraries, module_configs)
 
