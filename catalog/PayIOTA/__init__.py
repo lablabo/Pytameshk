@@ -7,7 +7,7 @@ from iota import TryteString
 class controller:
     def __init__(self, action, libraries, INIFile):
         iota = libraries['iota']
-        iota.do_broadcastTransactions()
+        iota.do_prepare_transaction()
         #self.testZMG(iota)
 
     def testZMG(self, iota):

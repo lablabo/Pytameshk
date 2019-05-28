@@ -138,6 +138,66 @@ class controller:
 
         return json.loads(returnData)
 
+    def do_prepare_transaction(self):
+        seed = self.get_seed()
+        api = Iota('http://iota.av.it.pt:14265', seed)
+        if not seed:
+            print('A random seed has been generated.')
+            self.output_seed(api.seed)
+
+        #api_response = api.get_new_addresses(index, count, security, checksum)
+        api_response = api.get_new_addresses(0, None, AddressGenerator.DEFAULT_SECURITY_LEVEL, False)
+        address = None;
+        for addy in api_response['addresses']:
+            address = (binary_type(addy).decode('ascii'))
+
+        # Test your connection to the server by sending a getNodeInfo command
+        # -> print(api.get_node_info())
+
+        data = {
+            "option1": {
+                "key1": "value1",
+                "key2": "value2"
+            }
+        }
+        message = str(data)
+
+        print('Starting transfer.')
+        start = time.time()
+
+        # For more information, see :py:meth:`Iota.send_transfer`.
+        result = api.send_transfer(
+            depth=3,
+            # One or more :py:class:`ProposedTransaction` objects to add to the
+            # bundle.
+            transfers=[
+                ProposedTransaction(
+                    # Recipient of the transfer.
+                    address=Address(address),
+
+                    # Amount of IOTA to transfer.
+                    # By default this is a zero value transfer.
+                    value=0,
+
+                    # Optional tag to attach to the transfer.
+                    tag=Tag(b'TAG'),
+
+                    # Optional message to include with the transfer.
+                    message=TryteString.from_string(message),
+                ),
+            ],
+        )
+        stop = time.time()
+
+        if 'bundle' in result:
+            print('attached address', address)
+            print('with transaction', str(result['bundle'].transactions[-1].hash))
+            print('in bundle', str(result['bundle'].hash))
+            print('within', round(stop - start, 1), 'seconds')
+        else:
+            print('probably failed')
+        print('Transfer complete.')
+
     def do_attachToTangle(self):
         result = self.do_getTransactionsToApprove()
         command = {
