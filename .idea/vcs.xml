@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/catalog/IOTA/iota.lib.py" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/catalog/PayIOTA/iota.lib.py" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/system/helper/iota.lib.py" vcs="Git" />
   </component>
 </project>
