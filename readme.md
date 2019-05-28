@@ -16,10 +16,10 @@ https://www.python.org/doc/
 
 ### Installing 
 
-Just:
+Run:
 
 ```
-sh install.sh
+python index.py
 ```
 
 
