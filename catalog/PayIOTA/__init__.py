@@ -15,7 +15,7 @@ class controller:
     def __init__(self, action, libraries, settings):
         app = Flask(__name__)
         api = Api(app)
-        api.add_resource(Employees_Name, '/api/<address>', resource_class_kwargs={'action': action,
+        api.add_resource(do_Transaction, '/api/<address>', resource_class_kwargs={'action': action,
                                                                                   'libraries': libraries,
                                                                                   'settings': settings})
         app.run(port='5002')
@@ -45,7 +45,7 @@ class controller:
             print(data)
 
 
-class Employees_Name(Resource):
+class do_Transaction(Resource):
     def __init__(self, action, libraries, settings):
         self.settings = settings
         self.action = action
