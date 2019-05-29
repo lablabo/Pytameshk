@@ -8,9 +8,13 @@ import urllib.request
 class controller:
 
     register = None
+    api_call_url = None
 
     def __init__(self, register):
         self.register = register
+
+    def setApiCall(self, url):
+        self.api_call_url = url
 
     # Send Request to URL
     def do_sendRequest(self, stringified, headers, url):
@@ -21,11 +25,16 @@ class controller:
                 'X-IOTA-API-Version': '1'
             }
 
-        if url is None:
-            url = "http://iota.av.it.pt:14265"
+        if url is not None:
+            self.api_call_url = url
 
-        request = urllib.request.Request(url=url, data=stringified.encode(), headers=headers)
+        if self.api_call_url is None:
+            self.api_call_url = "http://iota.av.it.pt:14265"
+
+        request = urllib.request.Request(url=self.api_call_url, data=stringified.encode(), headers=headers)
+
         return_data = urllib.request.urlopen(request).read()
+
         return json.loads(return_data)
 
     # Check the consistency of transactions. A consistent transaction is one where the following statements are true:
@@ -260,7 +269,7 @@ class controller:
                 "signature_message_fragment": txn_1.signature_message_fragment.decode()
                 }
 
-    #
+    # ------------------------------------
     # def prepare_transaction(self, seed):
     #     #api_response = api.get_new_addresses(index, count, security, checksum)
     #     api_response = api.get_new_addresses(0, None, AddressGenerator.DEFAULT_SECURITY_LEVEL, False)

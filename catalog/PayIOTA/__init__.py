@@ -5,9 +5,15 @@ from iota import TryteString
 
 
 class controller:
-    def __init__(self, action, libraries, INIFile):
+    def __init__(self, action, libraries, settings):
+
         iota = libraries['iota']
-        iota.do_prepare_transaction()
+
+        # Set API URL Call
+        # You can change it in setup.ini
+        iota.setApiCall(settings['DEFAULT']['API_CALL'])
+
+        #iota.do_prepare_transaction()
         #self.testZMG(iota)
 
     def testZMG(self, iota):
