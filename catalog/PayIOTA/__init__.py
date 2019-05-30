@@ -20,8 +20,8 @@ class controller:
                              'settings': settings,
                              "parser": parser
                          })
-        app.run(port=settings['DEFAULT']['SERVER_PORT'])
-        # libraries['zmq'].start(settings['ZMQ']['SERVER'])
+        #app.run(port=settings['DEFAULT']['SERVER_PORT'])
+        libraries['zmq'].start(settings['ZMQ']['SERVER'])
 
 
 class SERVER(Resource):
