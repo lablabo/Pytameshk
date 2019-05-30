@@ -1,4 +1,4 @@
-import asyncio, json, pprint
+import asyncio,json, pprint
 from indy import pool, ledger, wallet, did
 from indy.error import IndyError
 

@@ -1,3 +1,5 @@
+from requests import Request, Session
+
 class sessions:
     def __init__(self):
         self.session_ = 0

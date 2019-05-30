@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 from flask import jsonify, request, Response, Flask
-from flask_restful import reqparse, abort, Api, Resource
-from multiprocessing import Process
+from flask_restful import reqparse, Api, Resource
 
 
 class controller:
