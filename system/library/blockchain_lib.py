@@ -1,6 +1,3 @@
-# https://github.com/dvf/blockchain
-# https://arzdigital.com/learn-blockchains-by-building-one/
-
 import hashlib
 import json
 from time import time
@@ -9,6 +6,9 @@ from uuid import uuid4
 import requests
 
 
+# Source
+# https://github.com/dvf/blockchain
+# https://arzdigital.com/learn-blockchains-by-building-one/
 class controller:
     def __init__(self, register):
         self.current_transactions = []
